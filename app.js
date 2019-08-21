@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const fetch = require('node-fetch');
+const axios = require('axios');
 const weather = 'https://www.metaweather.com/api/location/';
 
 // app.use(morgan("dev"));
@@ -70,6 +71,24 @@ app.get('/weather/coordinates', async (request, response) => {
             error: err
         });
       }
+  });  
+
+  app.get('/weather/woeid', async (req, response, next) => {
+    const woe = await req.body.woeid;
+    if( !woe) {
+        const error = new Error();
+        error.message = 'Empty Woe Parameters';
+        throw error;
+    }
+    try {
+        const fetch =  await axios.get(weather + woe);
+        const result = {
+            data: fetch.data.consolidated_weather
+        }
+        response.json(result);
+    } catch (error) {
+      console.error(error)
+    }
   });
 
 

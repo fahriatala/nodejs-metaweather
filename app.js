@@ -73,7 +73,7 @@ app.get('/weather/coordinates', async (request, response) => {
       }
   });  
 
-  app.get('/weather/woeid', async (req, response, next) => {
+  app.post('/weather/woeid', async (req, response, next) => {
     const woe = await req.body.woeid;
     if( !woe) {
         const error = new Error();
